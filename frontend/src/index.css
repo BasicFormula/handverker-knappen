@@ -1,0 +1,309 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ============================================ */
+    /* NORDIC INDUSTRIAL-MODERN COLOR PALETTE */
+    /* ============================================ */
+    
+    /* Deep Forest Tones (Primary) - Rich Norwegian forest colors */
+    --forest-900: 15 25 20;        /* Darkest forest - almost black with green undertone */
+    --forest-800: 22 35 28;
+    --forest-700: 30 48 38;
+    --forest-600: 40 62 50;
+    --forest-500: 52 80 65;        /* Main forest */
+    --forest-400: 68 100 82;
+    
+    /* Slate Tones (Secondary) */
+    --slate-900: 30 35 40;         /* Deep workshop slate */
+    --slate-800: 45 52 60;
+    --slate-700: 60 70 82;
+    --slate-600: 82 95 110;
+    --slate-500: 100 116 135;      /* Main slate */
+    --slate-400: 140 152 168;
+    
+    /* Warm Amber (Accent) */
+    --amber-700: 180 83 9;         /* Deep amber */
+    --amber-600: 217 119 6;
+    --amber-500: 245 158 11;       /* Main amber */
+    --amber-400: 251 191 36;
+    --amber-300: 252 211 77;
+    
+    /* Copper Metallic Highlights */
+    --copper-700: 138 63 43;
+    --copper-600: 184 115 51;
+    --copper-500: 205 127 50;      /* Main copper */
+    --copper-400: 229 160 102;
+    --copper-300: 242 190 145;
+    
+    /* Steel Blues (for gradients) */
+    --steel-700: 30 58 85;
+    --steel-600: 41 72 101;
+    --steel-500: 51 88 122;        /* Main steel blue */
+    --steel-400: 71 113 152;
+    
+    /* Warm Workshop Oranges (for gradients) */
+    --workshop-700: 194 65 12;
+    --workshop-600: 234 88 12;
+    --workshop-500: 249 115 22;    /* Main workshop orange */
+    --workshop-400: 251 146 60;
+    
+    /* Creamy Off-Whites (inviting, not stark) */
+    --cream-100: 250 248 242;      /* Lightest cream */
+    --cream-200: 245 242 232;
+    --cream-300: 232 227 210;      /* Main cream */
+    
+    /* ============================================ */
+    /* SEMANTIC THEME VARIABLES */
+    /* ============================================ */
+    
+    --background: 255 255 255;  /* Pure white instead of cream */
+    --foreground: var(--forest-900);
+    
+    --card: var(--cream-200);
+    --card-foreground: var(--forest-900);
+    
+    --popover: var(--cream-100);
+    --popover-foreground: var(--forest-900);
+    
+    --primary: var(--forest-600);
+    --primary-foreground: var(--cream-100);
+    
+    --secondary: var(--slate-600);
+    --secondary-foreground: var(--cream-100);
+    
+    --accent: var(--amber-500);
+    --accent-foreground: var(--forest-900);
+    
+    --muted: var(--slate-400);
+    --muted-foreground: var(--slate-700);
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: var(--cream-100);
+    
+    --border: var(--slate-400);
+    --input: var(--slate-400);
+    --ring: var(--forest-600);
+    
+    --radius: 0.5rem;
+  }
+  
+  .dark {
+    /* Dark mode: Rich, warm dark tones */
+    --background: var(--forest-900);
+    --foreground: var(--cream-200);
+    
+    --card: var(--slate-900);
+    --card-foreground: var(--cream-200);
+    
+    --popover: var(--forest-800);
+    --popover-foreground: var(--cream-200);
+    
+    --primary: var(--forest-400);
+    --primary-foreground: var(--forest-900);
+    
+    --secondary: var(--slate-700);
+    --secondary-foreground: var(--cream-200);
+    
+    --accent: var(--amber-500);
+    --accent-foreground: var(--forest-900);
+    
+    --muted: var(--slate-700);
+    --muted-foreground: var(--slate-400);
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: var(--cream-200);
+    
+    --border: var(--slate-700);
+    --input: var(--slate-700);
+    --ring: var(--amber-500);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ============================================ */
+/* CUSTOM ANIMATIONS */
+/* ============================================ */
+
+@keyframes breathe-glow {
+  0%, 100% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.4));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 16px rgba(249, 115, 22, 0.7));
+  }
+}
+
+.breathe-glow {
+  animation: breathe-glow 3s ease-in-out infinite;
+}
+
+@layer utilities {
+  .glassmorphic {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .kinetic-shadow {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .kinetic-shadow:hover {
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  .chamfered {
+    clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+  }
+
+  .glass-surface-light {
+    /* Warm Nordic glassmorphic with subtle amber tint */
+    background: linear-gradient(135deg, rgba(250, 248, 242, 0.85) 0%, rgba(245, 242, 232, 0.75) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(140, 152, 168, 0.2);
+    box-shadow: 0 4px 24px -4px rgba(20, 35, 28, 0.08);
+  }
+
+  .bar-gradient-bottom {
+    position: relative;
+  }
+  .bar-gradient-bottom::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px; /* increased from 2px for stronger presence */
+    background: linear-gradient(90deg, rgba(107,139,164,0.75) 0%, rgba(229,149,0,0.95) 55%, rgba(184,115,51,0.98) 100%);
+    pointer-events: none;
+  }
+
+  .bar-gradient-top {
+    position: relative;
+  }
+  .bar-gradient-top::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 3px; /* increased from 2px for stronger presence */
+    background: linear-gradient(90deg, rgba(107,139,164,0.75) 0%, rgba(229,149,0,0.95) 55%, rgba(184,115,51,0.98) 100%);
+    pointer-events: none;
+  }
+
+  .gradient-sunset {
+    /* Diagonal cool steel blue → warm orange/copper overlay */
+    background: linear-gradient(135deg, rgba(80,114,134,0.35) 0%, rgba(229,149,0,0.28) 60%, rgba(184,115,51,0.24) 100%);
+  }
+
+  .nordic-pattern {
+    /* Subtle blueprint-like grid / geometric lines */
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        rgba(52,62,72,0.18),
+        rgba(52,62,72,0.18) 1px,
+        transparent 1px,
+        transparent 24px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgba(52,62,72,0.12),
+        rgba(52,62,72,0.12) 1px,
+        transparent 1px,
+        transparent 24px
+      );
+    background-size: 100% 100%, 100% 100%;
+  }
+
+  .kinetic-lift {
+    transition: transform 220ms ease, box-shadow 220ms ease;
+  }
+  .kinetic-lift:hover {
+    transform: translateY(-6px); /* stronger lift */
+    box-shadow: 0 22px 44px -14px rgba(0,0,0,0.28); /* stronger depth */
+  }
+
+  /* Typography utilities for a cohesive system across the app */
+  .type-headline-xl { @apply text-4xl sm:text-5xl md:text-7xl xl:text-8xl font-extrabold tracking-[-0.02em] leading-[0.95] text-forest-900 font-headline; }
+  .type-headline-lg { @apply text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-[-0.02em] leading-[1.1] text-forest-900 font-headline; }
+  .type-headline { @apply text-3xl md:text-5xl font-extrabold tracking-[-0.01em] leading-[1.1] text-forest-900 font-headline; }
+  .type-subtitle { @apply text-base md:text-xl xl:text-2xl text-slate-700 leading-relaxed font-sans; }
+  .type-body { @apply text-base md:text-lg text-slate-700 leading-relaxed font-sans; }
+  .type-cta { @apply font-bold tracking-[0.02em] font-sans; }
+  .type-number { @apply font-extrabold tracking-[-0.03em] text-slate-400 font-headline; font-feature-settings: "tnum" 1; }
+  .ls-tight { letter-spacing: -0.02em; }
+  .ls-wide { letter-spacing: 0.04em; }
+
+  /* Hero button animations */
+  .breathe-glow {
+    animation: breatheGlow 2.5s ease-in-out infinite;
+    will-change: filter;
+  }
+
+  .bounce-hint {
+    animation: bounce 0.5s ease-in-out infinite;
+    display: inline-block;
+    will-change: transform;
+  }
+}
+
+@keyframes buttonGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1.05);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    opacity: 0.3;
+    filter: drop-shadow(0 0 8px rgba(255,140,0,0.4)) drop-shadow(0 0 18px rgba(255,140,0,0.3)) drop-shadow(0 0 32px rgba(255,140,0,0.2));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 28px rgba(255,140,0,1)) drop-shadow(0 0 56px rgba(255,140,0,0.8)) drop-shadow(0 0 80px rgba(255,140,0,0.5));
+  }
+  100% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 20px rgba(255,140,0,0.8)) drop-shadow(0 0 42px rgba(255,140,0,0.6)) drop-shadow(0 0 68px rgba(255,140,0,0.4));
+  }
+}
+
+@keyframes breatheGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(255,140,0,0.7)) drop-shadow(0 0 14px rgba(255,140,0,0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(255,140,0,0.95)) drop-shadow(0 0 24px rgba(255,140,0,0.75)) drop-shadow(0 0 32px rgba(255,140,0,0.5));
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}

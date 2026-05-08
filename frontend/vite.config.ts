@@ -27,7 +27,20 @@ const listExtensions = (): Extension[] => {
 		}
 	}
 
-	return [];
+	// Fallback hardcoded extensions for production
+	return [
+		{ name: "shadcn", version: "1", config: {} },
+		{
+			name: "stack-auth",
+			version: "1",
+			config: {
+				projectId: "ac172140-0a4b-4100-bbe3-3530fdf39e0e",
+				publishableClientKey: "pck_f9krdds6b0616fxbnvyrjhvcphsx1g15ars7p1kzrt8eg",
+				jwksUrl: "https://api.stack-auth.com/api/v1/projects/ac172140-0a4b-4100-bbe3-3530fdf39e0e/.well-known/jwks.json",
+				secretRefForSecretServerKey: { name: "STACK_SECRET_SERVER_KEY", env: "app" }
+			}
+		}
+	];
 };
 
 const extensions = listExtensions();

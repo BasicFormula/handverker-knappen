@@ -87,7 +87,7 @@ export default function App() {
                   }}
                 >
                   <button
-                    onClick={() => navigate("/service-request-page")}
+                    onClick={() => document.getElementById("cta-section")?.scrollIntoView({ behavior: "smooth" })}
                     onMouseDown={() => setPressed(true)}
                     onMouseUp={() => setPressed(false)}
                     onMouseLeave={() => setPressed(false)}
@@ -308,7 +308,7 @@ export default function App() {
         </section>
 
         {/* Final CTA Section */}
-        <section className="py-12 md:py-20 text-center relative overflow-hidden bg-white">
+        <section id="cta-section" className="py-12 md:py-20 text-center relative overflow-hidden bg-white">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-forest-900/5 to-steel-800/8" />
             <div className="absolute inset-0 nordic-pattern opacity-[0.03] pointer-events-none" />
             <div className="container mx-auto px-4 relative z-10">
@@ -318,7 +318,7 @@ export default function App() {
                     <Button size="lg" className="w-full md:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white type-cta tracking-[0.02em] shadow-lg shadow-red-600/20" onClick={() => navigate("/service-request-page")}>
                         {t('hero_cta_button')}
                     </Button>
-                    <Button size="lg" variant="outline" className="w-full md:w-auto border-slate-500/30 hover:bg-slate-500/5 text-forest-900 type-cta tracking-[0.02em]" onClick={() => navigate("/for-handverkere-page")}>
+                    <Button size="lg" variant="outline" className="w-full md:w-auto border-slate-500/30 hover:bg-slate-500/5 text-forest-900 type-cta tracking-[0.02em]" onClick={() => navigate("/handverker-registrering")}>
                         {t('hero_join_button')}
                     </Button>
                 </div>

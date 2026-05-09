@@ -6,7 +6,7 @@ import { joinPaths } from "./utils";
 
 export const stackClientApp = new StackClientApp({
   projectId: config.projectId,
-  publishableClientKey: config.publishableClientKey,
+  ...(config.publishableClientKey ? { publishableClientKey: config.publishableClientKey } : {}),
   tokenStore: "cookie",
   redirectMethod: {
     useNavigate,

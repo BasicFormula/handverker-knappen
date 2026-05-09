@@ -66,13 +66,13 @@ export default function App() {
           <div className="absolute top-1/4 right-0 w-96 h-96 bg-amber-500 rounded-full blur-3xl opacity-10 translate-x-1/2"></div>
           <div className="absolute bottom-1/4 left-0 w-80 h-80 bg-copper-500 rounded-full blur-3xl opacity-10 -translate-x-1/2"></div>
           <div className="relative z-10 w-full max-w-6xl mx-auto space-y-6 md:space-y-8">
-            {/* Hero Title - Scaled for impact */}
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-[-0.02em] leading-[0.95] text-forest-900 font-headline">
+            {/* Hero Title */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-white font-headline">
               {t('hero_title')}
             </h1>
 
-            {/* Hero Subtitle - emphasis & clarity */}
-            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-slate-700 max-w-4xl mx-auto leading-relaxed font-sans tracking-wide">
+            {/* Hero Subtitle */}
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/75 max-w-2xl leading-relaxed font-sans">
               {t('hero_subtitle')}
             </p>
             

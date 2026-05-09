@@ -71,8 +71,8 @@ export const translations: Translations = {
 
   // Landing Page
   hero_title: {
-    no: 'FINN RETT FAGPERSON',
-    en: 'FIND THE RIGHT PROFESSIONAL',
+    no: 'Finn rett fagperson',
+    en: 'Find the right professional',
   },
   hero_subtitle: {
     no: 'Vi kobler deg med verifiserte og dyktige håndverkere for enhver jobb. Trygt, enkelt og effektivt.',

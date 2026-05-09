@@ -34,9 +34,9 @@ const listExtensions = (): Extension[] => {
 			name: "stack-auth",
 			version: "1",
 			config: {
-				projectId: "ac172140-0a4b-4100-bbe3-3530fdf39e0e",
-				publishableClientKey: "pck_f9krdds6b0616fxbnvyrjhvcphsx1g15ars7p1kzrt8eg",
-				jwksUrl: "https://api.stack-auth.com/api/v1/projects/ac172140-0a4b-4100-bbe3-3530fdf39e0e/.well-known/jwks.json",
+				projectId: "c386bf32-fbab-4c25-a6b1-64cd8c8cf478",
+				publishableClientKey: "pck_8tq6fbtzrmsnyat5t06e8xgrq3k1bgx1amw8hzzewha9r",
+				jwksUrl: "https://api.stack-auth.com/api/v1/projects/c386bf32-fbab-4c25-a6b1-64cd8c8cf478/.well-known/jwks.json",
 				secretRefForSecretServerKey: { name: "STACK_SECRET_SERVER_KEY", env: "app" }
 			}
 		}

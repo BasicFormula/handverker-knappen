@@ -1,0 +1,14 @@
+Subject: Subscription activated by mistake — request for credit
+Hi Criipto team,
+I'm writing about my account (Masters AS, [din email]). The Verify Small plan was activated during setup, but we have only been in test mode and haven't used any production logins. Could you check our usage and consider crediting the unpaid March invoice (480 DKK)? I'd like to continue with Criipto for our production launch within the next weeks.
+Thanks,
+[Ditt navn]
+
+
+*******sy78
+NEXT_PUBLIC_STACK_PROJECT_ID=c386bf32-fbab-4c25-a6b1-64cd8c8cf478
+STACK_SECRET_SERVER_KEY=ssk_rb4thrycmdgw51vjc2fm11geh168k6qv1aeccwccxkey0
+
+project id c386bf32-fbab-4c25-a6b1-64cd8c8cf478
+
+secret for handverker i stack aut ssk_rb4thrycmdgw51vjc2fm11geh168k6qv1aeccwccxkey0

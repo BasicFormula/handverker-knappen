@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;600;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -59,66 +61,66 @@
     /* SEMANTIC THEME VARIABLES */
     /* ============================================ */
     
-    --background: 255 255 255;
-    --foreground: 15 25 20;        /* forest-900 — dark text on light bg */
-
-    --card: 245 242 232;           /* cream-200 */
-    --card-foreground: 15 25 20;
-
-    --popover: 250 248 242;        /* cream-100 */
-    --popover-foreground: 15 25 20;
-
-    --primary: 40 62 50;           /* forest-600 */
-    --primary-foreground: 250 248 242;
-
-    --secondary: 82 95 110;        /* slate-600 */
-    --secondary-foreground: 250 248 242;
-
-    --accent: 245 158 11;          /* amber-500 */
-    --accent-foreground: 15 25 20;
-
-    --muted: 140 152 168;          /* slate-400 */
-    --muted-foreground: 60 70 82;  /* slate-700 */
-
+    --background: 255 255 255;  /* Pure white instead of cream */
+    --foreground: var(--forest-900);
+    
+    --card: var(--cream-200);
+    --card-foreground: var(--forest-900);
+    
+    --popover: var(--cream-100);
+    --popover-foreground: var(--forest-900);
+    
+    --primary: var(--forest-600);
+    --primary-foreground: var(--cream-100);
+    
+    --secondary: var(--slate-600);
+    --secondary-foreground: var(--cream-100);
+    
+    --accent: var(--amber-500);
+    --accent-foreground: var(--forest-900);
+    
+    --muted: var(--slate-400);
+    --muted-foreground: var(--slate-700);
+    
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 250 248 242;
-
-    --border: 140 152 168;
-    --input: 140 152 168;
-    --ring: 40 62 50;
+    --destructive-foreground: var(--cream-100);
+    
+    --border: var(--slate-400);
+    --input: var(--slate-400);
+    --ring: var(--forest-600);
     
     --radius: 0.5rem;
   }
   
   .dark {
     /* Dark mode: Rich, warm dark tones */
-    --background: 15 25 20;        /* forest-900 */
-    --foreground: 245 242 232;     /* cream-200 — light text on dark bg */
-
-    --card: 30 35 40;              /* slate-900 */
-    --card-foreground: 245 242 232;
-
-    --popover: 22 35 28;           /* forest-800 */
-    --popover-foreground: 245 242 232;
-
-    --primary: 68 100 82;          /* forest-400 */
-    --primary-foreground: 15 25 20;
-
-    --secondary: 60 70 82;         /* slate-700 */
-    --secondary-foreground: 245 242 232;
-
-    --accent: 245 158 11;          /* amber-500 */
-    --accent-foreground: 15 25 20;
-
-    --muted: 60 70 82;             /* slate-700 */
-    --muted-foreground: 140 152 168; /* slate-400 */
-
+    --background: var(--forest-900);
+    --foreground: var(--cream-200);
+    
+    --card: var(--slate-900);
+    --card-foreground: var(--cream-200);
+    
+    --popover: var(--forest-800);
+    --popover-foreground: var(--cream-200);
+    
+    --primary: var(--forest-400);
+    --primary-foreground: var(--forest-900);
+    
+    --secondary: var(--slate-700);
+    --secondary-foreground: var(--cream-200);
+    
+    --accent: var(--amber-500);
+    --accent-foreground: var(--forest-900);
+    
+    --muted: var(--slate-700);
+    --muted-foreground: var(--slate-400);
+    
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 245 242 232;
-
-    --border: 60 70 82;            /* slate-700 */
-    --input: 60 70 82;
-    --ring: 245 158 11;            /* amber-500 */
+    --destructive-foreground: var(--cream-200);
+    
+    --border: var(--slate-700);
+    --input: var(--slate-700);
+    --ring: var(--amber-500);
   }
 }
 
@@ -127,8 +129,7 @@
     @apply border-border;
   }
   body {
-    background-color: rgb(var(--background));
-    color: rgb(var(--foreground));
+    @apply bg-background text-foreground;
   }
 }
 
@@ -242,14 +243,13 @@
   }
 
   /* Typography utilities for a cohesive system across the app */
-  /* Uses CSS foreground variable so both light and dark mode work automatically */
-  .type-headline-xl { @apply text-4xl sm:text-5xl md:text-7xl xl:text-8xl font-extrabold tracking-[-0.02em] leading-[0.95] font-headline; color: rgb(var(--foreground)); }
-  .type-headline-lg { @apply text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-[-0.02em] leading-[1.1] font-headline; color: rgb(var(--foreground)); }
-  .type-headline { @apply text-3xl md:text-5xl font-extrabold tracking-[-0.01em] leading-[1.1] font-headline; color: rgb(var(--foreground)); }
-  .type-subtitle { @apply text-base md:text-xl xl:text-2xl leading-relaxed font-sans; color: rgb(var(--muted-foreground)); }
-  .type-body { @apply text-base md:text-lg leading-relaxed font-sans; color: rgb(var(--muted-foreground)); }
+  .type-headline-xl { @apply text-4xl sm:text-5xl md:text-7xl xl:text-8xl font-extrabold tracking-[-0.02em] leading-[0.95] text-forest-900 font-headline; }
+  .type-headline-lg { @apply text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-[-0.02em] leading-[1.1] text-forest-900 font-headline; }
+  .type-headline { @apply text-3xl md:text-5xl font-extrabold tracking-[-0.01em] leading-[1.1] text-forest-900 font-headline; }
+  .type-subtitle { @apply text-base md:text-xl xl:text-2xl text-slate-700 leading-relaxed font-sans; }
+  .type-body { @apply text-base md:text-lg text-slate-700 leading-relaxed font-sans; }
   .type-cta { @apply font-bold tracking-[0.02em] font-sans; }
-  .type-number { @apply font-extrabold tracking-[-0.03em] font-headline; color: rgb(var(--muted)); font-feature-settings: "tnum" 1; }
+  .type-number { @apply font-extrabold tracking-[-0.03em] text-slate-400 font-headline; font-feature-settings: "tnum" 1; }
   .ls-tight { letter-spacing: -0.02em; }
   .ls-wide { letter-spacing: 0.04em; }
 

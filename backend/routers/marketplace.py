@@ -1,10 +1,18 @@
 from datetime import datetime, timezone
+from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException
 
 from demo_data import AFFILIATE_PRODUCTS, CRAFTSPEOPLE
 from database import db
-from schemas import AssignmentCreate, JobCreate, OfferCreate, RatingCreate
+from schemas import (
+    AssignmentCreate,
+    CraftspersonOnboard,
+    JobCreate,
+    OfferCreate,
+    RatingCreate,
+    ReliabilityEvent,
+)
 from services import create_job, create_offer, get_job, get_jobs, get_offers
 
 
@@ -79,12 +87,67 @@ async def assign_craftsperson(job_id: str, payload: AssignmentCreate):
 async def create_rating(payload: RatingCreate):
     rating = {"id": f"rating-{payload.craftsperson_id}", **payload.model_dump(), "created_at": datetime.now(timezone.utc).isoformat()}
     await db.ratings.insert_one(rating.copy())
+    profile = await db.craftspeople.find_one({"id": payload.craftsperson_id}, {"_id": 0})
+    if profile:
+        previous_count = profile.get("review_count", 0)
+        previous_rating = profile.get("rating", 0) or 0
+        new_count = previous_count + 1
+        new_rating = round(((previous_rating * previous_count) + payload.score) / new_count, 1)
+        await db.craftspeople.update_one(
+            {"id": payload.craftsperson_id},
+            {"$set": {"rating": new_rating, "review_count": new_count, "reputation_status": "rated"}},
+        )
     return rating
 
 
 @router.get("/craftspeople")
 async def list_craftspeople():
-    return CRAFTSPEOPLE
+    records = await db.craftspeople.find({}, {"_id": 0}).to_list(100)
+    return [*CRAFTSPEOPLE, *records]
+
+
+@router.get("/market-coverage")
+async def market_coverage():
+    return {
+        "launch_region": "Oslo",
+        "areas": ["Oslo", "Bærum", "Lillestrøm", "Nordre Follo"],
+        "expansion": "Nasjonal dekning bygges område for område.",
+    }
+
+
+@router.post("/craftspeople/onboard", status_code=201)
+async def onboard_craftsperson(payload: CraftspersonOnboard):
+    initials = "".join(part[0] for part in payload.name.split()[:2]).upper()
+    craftsperson = {
+        "id": f"craft-{uuid4().hex[:8]}",
+        **payload.model_dump(),
+        "avatar": initials,
+        "rating": None,
+        "review_count": 0,
+        "reputation_status": "new",
+        "reliability_score": 100,
+        "reliability_label": "Starter",
+        "verified": False,
+        "verification_status": "awaiting_bankid",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    }
+    await db.craftspeople.insert_one(craftsperson.copy())
+    return {key: value for key, value in craftsperson.items() if key != "_id"}
+
+
+@router.post("/craftspeople/{craftsperson_id}/reliability")
+async def register_reliability_event(craftsperson_id: str, payload: ReliabilityEvent):
+    changes = {"completed": 0, "cancelled": -10, "no_response": -7}
+    profile = await db.craftspeople.find_one({"id": craftsperson_id}, {"_id": 0})
+    if not profile:
+        raise HTTPException(status_code=404, detail="Håndverkeren finnes ikke")
+    score = max(0, min(100, profile.get("reliability_score", 100) + changes[payload.outcome]))
+    label = "God" if score >= 90 else "Følger opp" if score >= 70 else "Trenger oppfølging"
+    await db.craftspeople.update_one(
+        {"id": craftsperson_id},
+        {"$set": {"reliability_score": score, "reliability_label": label}},
+    )
+    return {"craftsperson_id": craftsperson_id, "reliability_score": score, "reliability_label": label}
 
 
 @router.get("/affiliate-products")

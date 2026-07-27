@@ -1,7 +1,7 @@
 CRAFTSPEOPLE = [
-    {"id": "craft-ida", "name": "Ida Nilsen", "company": "Nilsen Elektro AS", "trade": "Elektriker", "location": "Oslo", "rating": 4.9, "review_count": 87, "verified": True, "avatar": "IN", "bio": "Autorisert elektriker med ryddig kommunikasjon og presise avtaler."},
-    {"id": "craft-jonas", "name": "Jonas Berg", "company": "Berg Rørservice", "trade": "Rørlegger", "location": "Bærum", "rating": 4.8, "review_count": 63, "verified": True, "avatar": "JB", "bio": "Fagbrev og over ti års erfaring med bad, kjøkken og lekkasjesøk."},
-    {"id": "craft-sara", "name": "Sara Ødegård", "company": "Ødegård Tre & Bygg", "trade": "Tømrer", "location": "Oslo", "rating": 5.0, "review_count": 41, "verified": True, "avatar": "SØ", "bio": "Tømrer med sans for gjennomføring, detaljer og skandinaviske hjem."},
+    {"id": "craft-ida", "name": "Ida Nilsen", "company": "Nilsen Elektro AS", "trade": "Elektriker", "location": "Oslo", "rating": 4.9, "review_count": 87, "reputation_status": "rated", "reliability_score": 98, "verified": True, "avatar": "IN", "bio": "Autorisert elektriker med ryddig kommunikasjon og presise avtaler."},
+    {"id": "craft-jonas", "name": "Jonas Berg", "company": "Berg Rørservice", "trade": "Rørlegger", "location": "Bærum", "rating": 4.8, "review_count": 63, "reputation_status": "rated", "reliability_score": 96, "verified": True, "avatar": "JB", "bio": "Fagbrev og over ti års erfaring med bad, kjøkken og lekkasjesøk."},
+    {"id": "craft-sara", "name": "Sara Ødegård", "company": "Ødegård Tre & Bygg", "trade": "Tømrer", "location": "Oslo", "rating": 5.0, "review_count": 41, "reputation_status": "rated", "reliability_score": 99, "verified": True, "avatar": "SØ", "bio": "Tømrer med sans for gjennomføring, detaljer og skandinaviske hjem."},
 ]
 
 JOBS = [

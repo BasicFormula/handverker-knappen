@@ -26,3 +26,16 @@ class RatingCreate(BaseModel):
     craftsperson_id: str
     score: int = Field(ge=1, le=5)
     comment: str = Field(min_length=3, max_length=500)
+
+
+class CraftspersonOnboard(BaseModel):
+    name: str = Field(min_length=2, max_length=80)
+    company: str = Field(min_length=2, max_length=100)
+    trade: str = Field(min_length=2, max_length=60)
+    location: str = Field(min_length=2, max_length=80)
+    service_areas: list[str] = Field(min_length=1, max_length=8)
+    bio: str = Field(min_length=20, max_length=500)
+
+
+class ReliabilityEvent(BaseModel):
+    outcome: Literal["completed", "cancelled", "no_response"]

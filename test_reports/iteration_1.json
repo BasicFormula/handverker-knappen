@@ -1,0 +1,31 @@
+{
+  "summary": "Tested Håndverkerknappen demo marketplace end-to-end. Backend: 18/18 pytest cases passed against public preview URL for health, dashboard, jobs list/detail, create job (with GET persistence check), offers, assignment for Vipps+Stripe, invalid payment/craft validation, craftspeople, affiliate-products, payment options, email templates and ratings. Frontend (Playwright on preview URL): dashboard renders customer overview/stats/BankID; jobs page loads, category filter and 'kjøkken' search open the electrician job; offer form submits with success toast 'Tilbudet er sendt til kunden.'; assignment modal opens with Vipps+Stripe options, Vipps closes modal and shows 'Håndverker valgt. Betalingssteget er klart for aktivering.' (no real charge); new-job form publishes and redirects to job detail; profile page renders BankID/payment/notification blocks plus all 5 email templates; mobile 390px width has no horizontal overflow on dashboard or job detail.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_marketplace.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Consider merging demo JOBS with DB records in services.get_jobs. Current logic returns DB records only when any exist, which hides the 3 built-in demo jobs after the first user-created job. Discovered during first UI run: dashboard/jobs page showed only the TEST_ job and search for 'kjøkken' returned 0 results. After a manual DB cleanup all flows worked. This will degrade the demo the moment a real user publishes a job in production. Suggested: `records = [...] ; return JOBS + records` or seed JOBS on startup."
+  ],
+  "critical_code_review_comments": [
+    "services.get_jobs falls back to built-in JOBS only when the collection is empty; once any real job is saved the demo dataset disappears (breaks marketplace richness in demo mode).",
+    "backend/.env CORS_ORIGINS='*' with allow_credentials=True is a browser-blocked combo; either disable credentials or restrict origins before shipping.",
+    "server.py imports the router module which imports `from server import db` (circular import works only due to import order). Consider moving db construction to a dedicated module (e.g. database.py) to avoid fragility.",
+    "post_offer/create_offer only increments offer_count when the job exists in Mongo; for demo built-in jobs the counter stays 0 even after real offers are posted (inconsistency between the offer list and the job header).",
+    "Dashboard 'received_offers' and 'completed' stats are hardcoded (10 and 3) and never reflect real offers stored in DB."
+  ],
+  "updated_files": ["/app/backend/tests/test_marketplace.py"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "None required (demo mode, no auth).",
+  "seed_data_creation": "Created and then deleted a TEST_ job, offer, and 2 assignments through UI/API. DB (test_database.jobs/offers/assignments/ratings) was cleaned at end of run.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend uses in-repo demo_data.JOBS as a fallback only when Mongo collections are empty. If you run frontend tests after any prior POST /api/jobs, the built-in demo jobs will not appear. Clean Mongo (test_database.jobs/offers/assignments/ratings) before UI flow tests, or fix get_jobs to merge JOBS + records. All test IDs listed in the review request match the actual DOM. Preview URL: https://skilled-ops.preview.emergentagent.com.",
+  "rca of the issue": "Not a functional bug; the payment flow, offer flow, and new-job flow all worked. The only observed regression risk is get_jobs' fallback semantics. Reproduce: 1) POST /api/jobs, 2) GET /api/jobs -> only the single new job returns. Mitigation: return `list(JOBS) + records` or seed JOBS into Mongo on startup."
+}

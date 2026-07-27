@@ -1,34 +1,7 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
-
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-}
-
-.App-link {
-    color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
+:root { --ink:#102842; --ink-soft:#4d6174; --paper:#f8f8f5; --line:#dce3e2; --clay:#b65c45; --clay-dark:#91412e; --green:#173f34; --green-soft:#e9f0eb; --cream:#f2eee4; --white:#fff; --shadow:0 18px 40px rgba(15,39,63,.06); }
+* { box-sizing:border-box; }
+body { background:var(--paper); color:var(--ink); font-family:Manrope, sans-serif; }
+button, input, textarea, select { font:inherit; } button, a { -webkit-tap-highlight-color:transparent; }
+.app-frame { display:flex; min-height:100vh; }.sidebar { width:252px; flex:0 0 252px; display:flex; flex-direction:column; padding:32px 18px 24px; background:#173f34; color:#fff; position:sticky; top:0; height:100vh; }.brand,.mobile-brand { color:#fff; text-decoration:none; font-size:17px; font-weight:800; display:flex; align-items:center; gap:9px; }.brand>span:last-child span,.mobile-brand span { color:#bd725d; }.brand-mark { width:29px; height:29px; display:grid; place-items:center; border:1px solid #85a59a; color:#f6e8df; font-family:'DM Mono'; font-size:15px; }.nav-links { display:grid; gap:7px; margin-top:60px; }.nav-link,.help-link { display:flex; gap:12px; align-items:center; text-decoration:none; border:0; padding:12px 14px; border-radius:6px; color:#c5d5d1; background:transparent; font-weight:600; font-size:14px; cursor:pointer; text-align:left; transition:background-color .2s,color .2s; }.nav-link:hover,.nav-link.active { background:#285246; color:#fff; }.sidebar-bottom { margin-top:auto; border-top:1px solid rgba(255,255,255,.16); padding-top:20px; }.verified-mini { display:flex; gap:9px; align-items:center; color:#d1e2de; font-size:11px; line-height:1.6; }.verified-mini strong { color:#fff; font-size:12px; }.help-link { margin-top:12px; padding-left:0; }.main-content { width:calc(100% - 252px); }.topbar { min-height:88px; display:flex; align-items:center; justify-content:flex-end; padding:20px 5.5%; border-bottom:1px solid var(--line); background:rgba(248,248,245,.96); position:sticky; top:0; z-index:10; }.topbar-actions { display:flex; gap:19px; align-items:center; }.trust-note { display:flex; gap:7px; font-size:12px; align-items:center; color:var(--ink-soft); }.mobile-brand { display:none; }.page { max-width:1210px; padding:62px 5.5% 82px; margin:auto; }.page-intro { display:flex; justify-content:space-between; gap:30px; align-items:flex-end; padding-bottom:43px; }.page-intro h1,.detail-hero h1 { margin:7px 0 11px; font-size:48px; line-height:1.06; letter-spacing:0; font-weight:800; }.page-intro p:not(.eyebrow),.detail-hero-copy>p { color:var(--ink-soft); max-width:580px; line-height:1.65; margin:0; }.page-intro.compact { padding-bottom:30px; }.eyebrow { color:var(--clay); font:500 10px 'DM Mono'; letter-spacing:.16em; margin:0; }.primary-button,.accent-button,.secondary-button,.select-craft-button { min-height:46px; display:inline-flex; gap:9px; align-items:center; justify-content:center; border-radius:6px; text-decoration:none; cursor:pointer; font-weight:700; font-size:13px; border:1px solid transparent; transition:background-color .2s,transform .2s,color .2s; }.primary-button { background:var(--ink); color:#fff; padding:0 18px; }.primary-button:hover { background:#244a6b; transform:translateY(-1px); }.accent-button { background:var(--clay); color:#fff; padding:0 20px; }.accent-button:hover { background:var(--clay-dark); transform:translateY(-1px); }.secondary-button { background:#fff; border-color:var(--line); color:var(--ink); padding:0 15px; }.secondary-button:hover { border-color:#90a7ac; background:#f5f8f7; }.bankid-badge { display:inline-flex; align-items:center; gap:4px; background:var(--green-soft); color:var(--green); border-radius:3px; padding:3px 6px; font-size:10px; font-weight:800; white-space:nowrap; }.stat-grid { display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }.stat-block { min-height:161px; padding:27px 28px; border-right:1px solid var(--line); display:grid; align-content:start; gap:11px; }.stat-block:last-child { border:0; }.stat-block svg { color:var(--clay); }.stat-block span { color:var(--ink-soft); font-size:13px; }.stat-block strong { font-size:34px; line-height:1; }.section-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin:55px 0 20px; }.section-heading h2,.trust-panel h2,.settings-block h2,.verification-card h2 { margin:6px 0 0; font-size:25px; letter-spacing:0; }.section-heading>a { display:flex; align-items:center; gap:6px; color:var(--clay); font-weight:700; text-decoration:none; font-size:13px; }.job-list { display:grid; gap:10px; }.job-card { min-height:145px; display:flex; position:relative; border:1px solid var(--line); background:#fff; color:var(--ink); text-decoration:none; transition:border-color .2s,transform .2s,box-shadow .2s; }.job-card:hover { border-color:#aab8b9; transform:translateY(-2px); box-shadow:var(--shadow); }.job-card-image { width:154px; object-fit:cover; }.job-card-body { padding:18px 26px; flex:1; }.job-card-top,.job-card-meta { display:flex; align-items:center; justify-content:space-between; gap:15px; }.category-label,.open-label { color:var(--clay); font:500 10px 'DM Mono'; letter-spacing:.1em; text-transform:uppercase; }.open-label { color:var(--green); }.job-time { color:#8a99a5; font-size:11px; }.job-card h3 { margin:9px 0 6px; font-size:17px; }.job-card p { color:var(--ink-soft); font-size:12px; margin:0; line-height:1.55; }.job-card-meta { margin-top:13px; font-size:12px; color:var(--ink-soft); }.job-card-meta span { display:flex; align-items:center; gap:4px; }.job-card-meta strong { color:var(--ink); }.job-chevron { align-self:center; margin:0 20px; color:#91a1a6; }.lower-grid { display:grid; grid-template-columns:1.45fr 1fr; gap:16px; margin-top:55px; }.trust-panel,.automation-panel { display:flex; gap:22px; padding:30px; border-top:4px solid var(--green); background:var(--green-soft); }.automation-panel { border-color:var(--clay); background:var(--cream); }.panel-icon { color:var(--green); }.trust-panel p:not(.eyebrow),.automation-panel p:not(.eyebrow) { color:var(--ink-soft); line-height:1.6; font-size:13px; }.automation-panel h3 { margin:7px 0; font-size:17px; }

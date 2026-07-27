@@ -488,6 +488,284 @@
     font-size: 13px;
 }
 
+.new-craft-badge {
+    display: inline-flex;
+    align-items: center;
+    color: #5e5136;
+    background: #f3e9cf;
+    border: 1px solid #dccca4;
+    padding: 4px 7px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.reputation-explainer {
+    margin-top: 54px;
+    padding: 31px 0 0;
+    border-top: 1px solid var(--line);
+}
+
+.reputation-explainer h2 {
+    margin: 7px 0 28px;
+    font-size: 25px;
+}
+
+.reputation-rules {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.reputation-rules div {
+    display: grid;
+    grid-template-columns: 33px 1fr;
+    gap: 11px;
+    border-top: 3px solid var(--green);
+    padding-top: 15px;
+}
+
+.reputation-rules span {
+    color: var(--clay);
+    font: 500 11px "DM Mono";
+}
+
+.reputation-rules p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 12px;
+    line-height: 1.65;
+}
+
+.reputation-rules strong {
+    color: var(--ink);
+}
+
+.professional-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 275px;
+    gap: 60px;
+    align-items: end;
+    padding-bottom: 44px;
+    border-bottom: 1px solid var(--line);
+}
+
+.professional-intro h1,
+.onboarding-success h1 {
+    max-width: 700px;
+    margin: 8px 0 12px;
+    font-size: 48px;
+    line-height: 1.06;
+}
+
+.professional-intro > div > p:not(.eyebrow),
+.onboarding-success > p:not(.eyebrow) {
+    max-width: 680px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+}
+
+.trust-meter {
+    display: grid;
+    gap: 10px;
+    padding: 23px;
+    background: var(--cream);
+    border-top: 4px solid var(--clay);
+}
+
+.trust-meter strong {
+    font-size: 19px;
+}
+
+.trust-meter small {
+    color: var(--ink-soft);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.professional-grid {
+    display: grid;
+    grid-template-columns: 0.75fr 1.25fr;
+    gap: 68px;
+    margin-top: 48px;
+    align-items: start;
+}
+
+.reputation-guide {
+    display: grid;
+    gap: 20px;
+    padding: 25px;
+    background: var(--green-soft);
+    border-top: 4px solid var(--green);
+}
+
+.reputation-guide > div {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.reputation-guide svg {
+    flex: 0 0 auto;
+    color: var(--green);
+}
+
+.reputation-guide span {
+    display: grid;
+    gap: 5px;
+    font-size: 12px;
+}
+
+.reputation-guide small {
+    color: var(--ink-soft);
+    line-height: 1.55;
+}
+
+.craftsperson-form {
+    display: grid;
+    gap: 20px;
+    padding: 32px;
+    background: #fff;
+    border: 1px solid var(--line);
+}
+
+.form-heading h2 {
+    margin: 6px 0 0;
+    font-size: 24px;
+}
+
+.craftsperson-form label,
+.craftsperson-form fieldset {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.craftsperson-form input,
+.craftsperson-form select,
+.craftsperson-form textarea {
+    width: 100%;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    border-radius: 4px;
+    outline: none;
+    font-size: 13px;
+}
+
+.craftsperson-form input,
+.craftsperson-form select {
+    min-height: 46px;
+    padding: 0 13px;
+}
+
+.craftsperson-form textarea {
+    min-height: 120px;
+    padding: 13px;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+.craftsperson-form input:focus,
+.craftsperson-form select:focus,
+.craftsperson-form textarea:focus {
+    border-color: var(--clay);
+    box-shadow: 0 0 0 3px rgba(182, 92, 69, 0.12);
+}
+
+.area-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.area-chip {
+    display: inline-flex;
+    min-height: 35px;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink-soft);
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.area-chip.active {
+    color: var(--green);
+    background: var(--green-soft);
+    border-color: #a8bdb4;
+}
+
+.craft-submit {
+    justify-self: start;
+    padding: 0 19px;
+}
+
+.onboarding-success {
+    max-width: 780px;
+    padding: 56px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-top: 5px solid var(--green);
+}
+
+.onboarding-success > svg {
+    color: var(--green);
+}
+
+.onboarding-summary {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 29px 0;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.onboarding-summary span {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    color: var(--ink-soft);
+    font-size: 12px;
+}
+
+@media (max-width: 860px) {
+    .reputation-rules,
+    .professional-intro,
+    .professional-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .professional-intro,
+    .professional-grid {
+        gap: 28px;
+    }
+}
+
+@media (max-width: 560px) {
+    .reputation-explainer {
+        margin-top: 38px;
+    }
+
+    .professional-intro h1,
+    .onboarding-success h1 {
+        font-size: 31px;
+    }
+
+    .craftsperson-form,
+    .onboarding-success {
+        padding: 22px;
+    }
+}
+
 .profile-grid,
 .settings-grid {
     display: grid;

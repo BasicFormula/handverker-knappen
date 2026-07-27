@@ -7,6 +7,9 @@ export function BankIdBadge() {
 }
 
 export function Stars({ rating, count }) {
+  if (!rating || count === 0) {
+    return <span className="new-craft-badge" data-testid="new-craftsperson-status">Ny på plattformen</span>;
+  }
   return <span className="rating" data-testid="craftsperson-rating"><Star size={15} fill="currentColor" /> <strong>{rating}</strong><small>({count})</small></span>;
 }
 

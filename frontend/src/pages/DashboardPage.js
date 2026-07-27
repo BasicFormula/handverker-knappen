@@ -33,6 +33,10 @@ export default function DashboardPage() {
         <div className="trust-panel" data-testid="trust-panel"><div className="panel-icon"><CheckCircle2 size={22} /></div><div><p className="eyebrow">TRYGG MARKEDSPLASS</p><h2>Et godt valg starter med tillit.</h2><p>Alle kunder og håndverkere verifiseres med BankID før de kan bruke markedsplassen.</p></div></div>
         <div className="automation-panel" data-testid="email-automation-panel"><Mail size={22} /><div><p className="eyebrow">AUTOMATISERING</p><h3>{templates.length || 5} e-postløp er klare</h3><p>Varsler, kvitteringer og påminnelser sendes automatisk når de aktiveres.</p></div></div>
       </section>
+      <section className="reputation-explainer" data-testid="customer-reputation-explainer">
+        <div><p className="eyebrow">SLIK LESER DU PROFILER</p><h2>Stjerner er opptjent, ikke gitt på forhånd.</h2></div>
+        <div className="reputation-rules"><div><span>01</span><p><strong>Ny på plattformen</strong> betyr at håndverkeren ennå ikke har kundevurderinger, ikke at kvaliteten er vurdert lavere.</p></div><div><span>02</span><p><strong>BankID</strong> bekrefter identiteten før en profil kan bli synlig for kunder.</p></div><div><span>03</span><p><strong>Pålitelighet</strong> følger gjennomføring, svartid og avlysninger – separat fra kundens stjerner.</p></div></div>
+      </section>
     </div>
   );
 }

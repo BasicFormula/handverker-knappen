@@ -1,0 +1,28 @@
+{
+  "summary": "Extended backend + frontend testing for the new reputation V1 / craftsman onboarding features on the public preview URL. Backend: 27/27 pytest cases pass (added 9 new tests covering /api/market-coverage, /api/craftspeople/onboard, /api/craftspeople/{id}/reliability, plus regressions). Verified onboard response has rating=null, review_count=0, reputation_status='new', reliability_score=100, verified=False, verification_status='awaiting_bankid'; new craftsperson appears in GET /api/craftspeople with no artificial rating; reliability 'cancelled' event reduces score from 100 to 90 and rating remains null (independence confirmed); unknown craftsperson returns 404 and invalid outcome returns 422. Frontend (Playwright on preview URL, desktop 1920px and mobile 390px): DashboardPage renders customer-reputation-explainer with 'Stjerner', 'BankID', 'Pålitelighet' copy; nav 'For fagfolk' opens CraftspersonOnboardingPage; trust model shows 'Ny på plattformen' + '0 kundevurderinger'; reputation-guide lists the three-step model; intro mentions Oslo; submitting the form with valid data toggles the second service area (Bærum) via chip button, triggers success toast 'Fagprofilen er opprettet.', shows craftsperson-onboarding-success with new-craftsperson-summary containing company + service areas + 'BankID-steget er klart'; job detail (job-kitchen) still loads with existing rated craftspeople so selection flow is not regressed; mobile 390px onboarding page has 0px horizontal overflow.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_marketplace.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Optional: onboarded craftspeople have no `bankid_verify` endpoint yet — the UI success screen says 'BankID-steget er klart', so future work should wire an activation route once credentials arrive.",
+    "Prior iteration_1 finding still valid: services.get_jobs returns DB records only when the collection is non-empty, hiding the built-in demo jobs after the first real POST. Not tested again here but remains a demo regression risk."
+  ],
+  "critical_code_review_comments": [
+    "GET /api/craftspeople returns `[*CRAFTSPEOPLE, *records]` which means seeded demo craftspeople always appear first — good — but there is no de-duplication. If a demo id is re-used in Mongo the list would have duplicates.",
+    "Reliability score changes are only defined for {completed, cancelled, no_response}; 'completed' delta is 0 so successful jobs never raise the score above baseline. Consider positive delta for completed once real workload starts.",
+    "CraftspersonOnboard.service_areas has no allow-list validation — a client can submit arbitrary strings ignoring the Oslo coverage returned by /api/market-coverage. Fine for demo, tighten later.",
+    "Onboarding form does not disable submit while `submitting` is True in the DOM (button has disabled attr but form still submits on Enter). Minor UX.",
+    "AppShell nav-link data-testid uses lowercase label with single space→dash replace; 'For fagfolk' works but any future label with multiple spaces would break selectors."
+  ],
+  "updated_files": ["/app/backend/tests/test_marketplace.py"],
+  "success_rate": {"backend": "100% (27/27)", "frontend": "100%"},
+  "test_credentials": "None (demo, no auth).",
+  "seed_data_creation": "Created 1 TEST_ craftsperson via API test and 1 TEST_ craftsperson via UI onboarding form. Both plus residual TEST_ job/offer/rating from iteration 1 were deleted from Mongo at end of run (deleted counts: craftspeople=2, jobs=1, offers=1, ratings=1).",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Preview URL: https://skilled-ops.preview.emergentagent.com. All new endpoints (/api/market-coverage, /api/craftspeople/onboard, /api/craftspeople/{id}/reliability) covered in /app/backend/tests/test_marketplace.py. Key test IDs verified live: nav-for-fagfolk, craftsperson-onboarding-page, new-craftsperson-trust-model, reputation-guide, craftsperson-onboarding-form, craftsperson-name-input, craftsperson-company-input, craftsperson-trade-select, craftsperson-location-input, craftsperson-area-options (with per-chip `service-area-<slug>` ids), craftsperson-bio-input, create-craftsperson-profile-button, craftsperson-onboarding-success, new-craftsperson-summary, customer-reputation-explainer. All copy remains Norwegian.",
+  "rca of the issue": "N/A – no functional issues found in the tested scope."
+}

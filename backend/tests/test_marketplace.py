@@ -165,3 +165,99 @@ def test_create_rating(client):
                     json={"craftsperson_id": "craft-ida", "score": 5, "comment": "TEST_ Flott jobb"})
     assert r.status_code == 201
     assert r.json()["score"] == 5
+
+
+# ---- Market coverage ----
+def test_market_coverage(client):
+    r = client.get(f"{API}/market-coverage")
+    assert r.status_code == 200
+    d = r.json()
+    assert d["launch_region"] == "Oslo"
+    assert "Oslo" in d["areas"]
+    assert len(d["areas"]) >= 3
+    assert "expansion" in d
+
+
+# ---- Craftsperson onboarding + reliability ----
+@pytest.fixture(scope="module")
+def onboarded(client):
+    payload = {
+        "name": "TEST_ Ola Nordmann",
+        "company": "TEST_ Nordmann Elektro AS",
+        "trade": "Elektriker",
+        "location": "Oslo",
+        "service_areas": ["Oslo", "Bærum"],
+        "bio": "TEST_ Erfaren elektriker med sertifisering og fokus på smarthus.",
+    }
+    r = client.post(f"{API}/craftspeople/onboard", json=payload)
+    assert r.status_code == 201, r.text
+    return r.json()
+
+
+def test_onboard_returns_no_rating(onboarded):
+    p = onboarded
+    assert p["rating"] is None
+    assert p["review_count"] == 0
+    assert p["reputation_status"] == "new"
+    assert p["reliability_score"] == 100
+    assert p["verification_status"] == "awaiting_bankid"
+    assert p["verified"] is False
+    assert "_id" not in p
+    assert p["id"].startswith("craft-")
+    assert p["service_areas"] == ["Oslo", "Bærum"]
+
+
+def test_onboard_validation(client):
+    r = client.post(f"{API}/craftspeople/onboard", json={
+        "name": "X", "company": "Y", "trade": "E", "location": "O",
+        "service_areas": [], "bio": "too short",
+    })
+    assert r.status_code == 422
+
+
+def test_new_craftsperson_in_list(client, onboarded):
+    r = client.get(f"{API}/craftspeople")
+    assert r.status_code == 200
+    ppl = r.json()
+    match = next((p for p in ppl if p["id"] == onboarded["id"]), None)
+    assert match is not None
+    assert match["rating"] is None
+    assert match["review_count"] == 0
+
+
+def test_reliability_cancelled_reduces_score(client, onboarded):
+    cid = onboarded["id"]
+    r = client.post(f"{API}/craftspeople/{cid}/reliability", json={"outcome": "cancelled"})
+    assert r.status_code == 200
+    d = r.json()
+    assert d["reliability_score"] == 90
+    assert d["reliability_label"] in ("God", "Følger opp", "Trenger oppfølging")
+
+
+def test_reliability_independent_of_rating(client, onboarded):
+    cid = onboarded["id"]
+    # rating still empty even after reliability event
+    r = client.get(f"{API}/craftspeople")
+    match = next((p for p in r.json() if p["id"] == cid), None)
+    assert match["rating"] is None
+    assert match["review_count"] == 0
+
+
+def test_reliability_unknown_craft_404(client):
+    r = client.post(f"{API}/craftspeople/craft-does-not-exist/reliability",
+                    json={"outcome": "cancelled"})
+    assert r.status_code == 404
+
+
+def test_reliability_invalid_outcome(client, onboarded):
+    r = client.post(f"{API}/craftspeople/{onboarded['id']}/reliability",
+                    json={"outcome": "nope"})
+    assert r.status_code == 422
+
+
+# ---- Cleanup ----
+def test_cleanup(client, onboarded):
+    """Best-effort cleanup of TEST_ data via direct Mongo is not possible from here;
+    onboarded records remain in db.craftspeople. This test simply reports.
+    """
+    assert onboarded["id"].startswith("craft-")

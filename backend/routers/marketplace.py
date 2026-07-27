@@ -70,6 +70,8 @@ async def assign_craftsperson(job_id: str, payload: AssignmentCreate):
         raise HTTPException(status_code=404, detail="Oppdraget finnes ikke")
     craftsperson = next((person for person in CRAFTSPEOPLE if person["id"] == payload.craftsperson_id), None)
     if not craftsperson:
+        craftsperson = await db.craftspeople.find_one({"id": payload.craftsperson_id}, {"_id": 0})
+    if not craftsperson:
         raise HTTPException(status_code=404, detail="Håndverkeren finnes ikke")
     assignment = {
         "job_id": job_id,

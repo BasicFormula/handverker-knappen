@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, CircleHelp, HardHat, LayoutDashboard, Plus, UserRound } from "lucide-react";
+import { BriefcaseBusiness, CircleHelp, HardHat, LayoutDashboard, MailPlus, Plus, UserRound } from "lucide-react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 import { BankIdBadge } from "@/components/MarketplaceBits";
@@ -8,6 +8,7 @@ const links = [
   { to: "/", label: "Oversikt", icon: LayoutDashboard },
   { to: "/oppdrag", label: "Oppdrag", icon: BriefcaseBusiness },
   { to: "/for-fagfolk", label: "For fagfolk", icon: HardHat },
+  { to: "/lansering", label: "Lansering", icon: MailPlus },
   { to: "/profil", label: "Min profil", icon: UserRound },
 ];
 

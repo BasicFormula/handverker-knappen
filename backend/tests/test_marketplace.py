@@ -255,6 +255,35 @@ def test_reliability_invalid_outcome(client, onboarded):
     assert r.status_code == 422
 
 
+# ---- Launch campaign (consent-locked) ----
+def test_launch_campaign(client):
+    r = client.get(f"{API}/launch-campaign")
+    assert r.status_code == 200
+    d = r.json()
+    # Campaign meta
+    c = d["campaign"]
+    assert c["status"] == "consent_required"
+    assert c["contacts_imported"] == 0
+    assert "14 dager" in c["launch_timing"]
+    assert "Resend" in c["sender_status"]
+    # Segments include Oslo trades and greater-oslo
+    seg_ids = {s["id"] for s in d["segments"]}
+    assert {"electrician-oslo", "plumber-oslo", "carpenter-oslo", "greater-oslo"}.issubset(seg_ids)
+    # Required consent fields
+    for f in ["Navn", "Bedrift", "E-post", "Fagområde", "Område", "Samtykkedato", "Samtykkekilde"]:
+        assert f in d["required_fields"]
+    # Three templates in correct order
+    tpl_ids = [t["id"] for t in d["templates"]]
+    assert tpl_ids == ["launch-invite", "launch-reminder", "launch-day"]
+
+
+def test_no_send_or_import_endpoints(client):
+    for path in ["/launch-campaign/send", "/launch-campaign/import", "/contacts/import", "/campaigns/send"]:
+        r = client.post(f"{API}{path}", json={})
+        assert r.status_code in (404, 405), f"Unexpected {r.status_code} for {path}"
+
+
+
 # ---- Cleanup ----
 def test_cleanup(client, onboarded):
     """Best-effort cleanup of TEST_ data via direct Mongo is not possible from here;

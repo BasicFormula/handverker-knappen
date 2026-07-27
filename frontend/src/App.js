@@ -8,6 +8,7 @@ import DashboardPage from "@/pages/DashboardPage";
 import CraftspersonOnboardingPage from "@/pages/CraftspersonOnboardingPage";
 import JobDetailPage from "@/pages/JobDetailPage";
 import JobsPage from "@/pages/JobsPage";
+import LaunchPreparationPage from "@/pages/LaunchPreparationPage";
 import NewJobPage from "@/pages/NewJobPage";
 import ProfilePage from "@/pages/ProfilePage";
 
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/oppdrag/ny" element={<NewJobPage />} />
           <Route path="/oppdrag/:jobId" element={<JobDetailPage />} />
           <Route path="/for-fagfolk" element={<CraftspersonOnboardingPage />} />
+          <Route path="/lansering" element={<LaunchPreparationPage />} />
           <Route path="/profil" element={<ProfilePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

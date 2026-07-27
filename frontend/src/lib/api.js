@@ -14,3 +14,4 @@ export const postOffer = async (jobId, payload) => (await axios.post(`${API}/job
 export const assignCraftsperson = async (jobId, payload) => (await axios.post(`${API}/jobs/${jobId}/assignment`, payload)).data;
 export const fetchMarketCoverage = async () => (await axios.get(`${API}/market-coverage`)).data;
 export const onboardCraftsperson = async (payload) => (await axios.post(`${API}/craftspeople/onboard`, payload)).data;
+export const fetchLaunchCampaign = async () => (await axios.get(`${API}/launch-campaign`)).data;

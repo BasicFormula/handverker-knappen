@@ -176,3 +176,43 @@ async def email_templates():
         {"id": "rating", "title": "Ratingpåminnelse", "trigger": "Oppdrag markert fullført"},
         {"id": "intro-offer", "title": "Halv pris første år", "trigger": "Planlagt kampanje"},
     ]
+
+
+@router.get("/launch-campaign")
+async def launch_campaign():
+    return {
+        "campaign": {
+            "name": "Oslo – håndverkerinvitasjon",
+            "status": "consent_required",
+            "launch_timing": "14 dager før kundelansering",
+            "sender_status": "Resend ikke tilkoblet",
+            "contacts_imported": 0,
+        },
+        "segments": [
+            {"id": "electrician-oslo", "label": "Elektrikere i Oslo", "trade": "Elektriker", "area": "Oslo"},
+            {"id": "plumber-oslo", "label": "Rørleggere i Oslo", "trade": "Rørlegger", "area": "Oslo"},
+            {"id": "carpenter-oslo", "label": "Tømrere i Oslo", "trade": "Tømrer", "area": "Oslo"},
+            {"id": "greater-oslo", "label": "Utvidet Oslo-område", "trade": "Alle fag", "area": "Bærum, Lillestrøm og Nordre Follo"},
+        ],
+        "required_fields": ["Navn", "Bedrift", "E-post", "Fagområde", "Område", "Samtykkedato", "Samtykkekilde"],
+        "templates": [
+            {
+                "id": "launch-invite",
+                "title": "Invitasjon til fagprofil",
+                "subject": "Bygg tillit fra første oppdrag i Oslo",
+                "preview": "Håndverkerknappen åpner snart for kunder i Oslo. Opprett fagprofil før lansering.",
+            },
+            {
+                "id": "launch-reminder",
+                "title": "Påminnelse før kundelansering",
+                "subject": "En uke igjen: Vær synlig når Oslo-kundene kommer",
+                "preview": "Fullfør fagprofilen og BankID-verifiseringen før kundene kan legge ut oppdrag.",
+            },
+            {
+                "id": "launch-day",
+                "title": "Kundelansering",
+                "subject": "Håndverkerknappen er nå åpen for Oslo",
+                "preview": "Se oppdrag som matcher faget og områdene du har valgt.",
+            },
+        ],
+    }

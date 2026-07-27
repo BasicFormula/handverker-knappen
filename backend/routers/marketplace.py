@@ -105,7 +105,9 @@ async def create_rating(payload: RatingCreate):
 @router.get("/craftspeople")
 async def list_craftspeople():
     records = await db.craftspeople.find({}, {"_id": 0}).to_list(100)
-    return [*CRAFTSPEOPLE, *records]
+    profiles_by_id = {person["id"]: person for person in CRAFTSPEOPLE}
+    profiles_by_id.update({person["id"]: person for person in records})
+    return list(profiles_by_id.values())
 
 
 @router.get("/market-coverage")
@@ -119,6 +121,9 @@ async def market_coverage():
 
 @router.post("/craftspeople/onboard", status_code=201)
 async def onboard_craftsperson(payload: CraftspersonOnboard):
+    supported_areas = {"Oslo", "Bærum", "Lillestrøm", "Nordre Follo"}
+    if not set(payload.service_areas).issubset(supported_areas):
+        raise HTTPException(status_code=422, detail="Velg områder fra Oslo-lanseringen")
     initials = "".join(part[0] for part in payload.name.split()[:2]).upper()
     craftsperson = {
         "id": f"craft-{uuid4().hex[:8]}",
@@ -139,7 +144,7 @@ async def onboard_craftsperson(payload: CraftspersonOnboard):
 
 @router.post("/craftspeople/{craftsperson_id}/reliability")
 async def register_reliability_event(craftsperson_id: str, payload: ReliabilityEvent):
-    changes = {"completed": 0, "cancelled": -10, "no_response": -7}
+    changes = {"completed": 1, "cancelled": -10, "no_response": -7}
     profile = await db.craftspeople.find_one({"id": craftsperson_id}, {"_id": 0})
     if not profile:
         raise HTTPException(status_code=404, detail="Håndverkeren finnes ikke")

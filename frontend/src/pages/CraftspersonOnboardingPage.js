@@ -29,6 +29,7 @@ export default function CraftspersonOnboardingPage() {
   };
   const submit = async (event) => {
     event.preventDefault();
+    if (submitting) return;
     setSubmitting(true);
     try {
       const profile = await onboardCraftsperson(form);
@@ -52,7 +53,7 @@ export default function CraftspersonOnboardingPage() {
           <div className="onboarding-summary" data-testid="new-craftsperson-summary">
             <span><Building2 size={17} /> {created.company}</span>
             <span><MapPinned size={17} /> {created.service_areas.join(", ")}</span>
-            <span><ShieldCheck size={17} /> BankID-steget er klart</span>
+            <span><ShieldCheck size={17} /> Neste steg: BankID-verifisering</span>
           </div>
           <button type="button" className="primary-button" onClick={() => setCreated(null)} data-testid="register-another-craftsperson-button">Registrer en til <ArrowRight size={17} /></button>
         </section>

@@ -29,6 +29,13 @@ Bygg en trygg, norskspråklig markedsplass der BankID-verifiserte kunder kan leg
 - API-er for helse, oppdrag, tilbud, tildeling, ratings, håndverkere, affiliateprodukter, betalingsvalg og e-postmaler.
 - Kontroller: API- og grensesnitttester bestått, inkludert mobilvisning uten horisontal overflyt.
 
+### Funksjon lagt til – 2026-07-27
+- Håndverker-onboarding med fagområde, virksomhetsprofil og valgbare lanseringsområder: Oslo, Bærum, Lillestrøm og Nordre Follo.
+- Ærlig omdømmemodell V1: nye håndverkere får statusen «Ny på plattformen» uten kunstig stjernescore; kundestjerner kommer først etter en reell vurdering.
+- Separat pålitelighetssignal for gjennomføring, avlysninger og manglende respons, uavhengig av kundestjerner.
+- Kundesider forklarer hvordan BankID, opptjente stjerner og pålitelighet skal tolkes.
+- Mobilnavigasjon gjør kunde-, oppdrags-, profil- og fagfolksidene tilgjengelige på små skjermer.
+
 ### Prioritert backlog
 #### P0
 - Koble til Clerk + Criipto OIDC med reell BankID-verifisering når tilganger foreligger.

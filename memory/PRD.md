@@ -36,6 +36,13 @@ Bygg en trygg, norskspråklig markedsplass der BankID-verifiserte kunder kan leg
 - Kundesider forklarer hvordan BankID, opptjente stjerner og pålitelighet skal tolkes.
 - Mobilnavigasjon gjør kunde-, oppdrags-, profil- og fagfolksidene tilgjengelige på små skjermer.
 
+### Funksjon lagt til – 2026-07-27: samtykkesikker Oslo-lansering
+- Lanseringssenter for Oslo med fire planlagte håndverkersegmenter og en 14-dagers invitasjonsperiode før kundelansering.
+- Tre norske e-postutkast for invitasjon, påminnelse og lanseringsdag.
+- Samtykkelås: ingen kontaktimport, opplasting eller utsendelse er tilgjengelig før grunnlaget kan dokumenteres.
+- Importkrav er synlige: navn, bedrift, e-post, fagområde, område, samtykkedato og samtykkekilde.
+- Påmeldingslenke til fagprofil kan kopieres fra lanseringssenteret.
+
 ### Prioritert backlog
 #### P0
 - Koble til Clerk + Criipto OIDC med reell BankID-verifisering når tilganger foreligger.
@@ -45,6 +52,7 @@ Bygg en trygg, norskspråklig markedsplass der BankID-verifiserte kunder kan leg
 #### P1
 - Resend-avsender, transaksjons-e-post og planlagte kampanjer.
 - Håndverker-onboarding med betalingsmetode og fag-/geografipreferanser.
+- Aktivere import og Resend-utsendelse først når samtykkegrunnlag, avsenderdomene og nødvendig tilgang er på plass.
 - Bildelasting til oppdrag med objektlagring.
 
 #### P2

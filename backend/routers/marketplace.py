@@ -3,8 +3,8 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException
 
 from demo_data import AFFILIATE_PRODUCTS, CRAFTSPEOPLE
+from database import db
 from schemas import AssignmentCreate, JobCreate, OfferCreate, RatingCreate
-from server import db
 from services import create_job, create_offer, get_job, get_jobs, get_offers
 
 
@@ -19,9 +19,14 @@ async def health_check():
 @router.get("/dashboard")
 async def dashboard():
     jobs = await get_jobs(db)
+    completed_ratings = await db.ratings.count_documents({})
     return {
         "user": {"name": "Kari Johansen", "role": "Kunde", "verified": True},
-        "stats": {"open_jobs": len([job for job in jobs if job["status"] == "Åpen"]), "received_offers": 10, "completed": 3},
+        "stats": {
+            "open_jobs": len([job for job in jobs if job["status"] == "Åpen"]),
+            "received_offers": sum(job["offer_count"] for job in jobs),
+            "completed": completed_ratings,
+        },
         "recent_jobs": jobs[:3],
     }
 

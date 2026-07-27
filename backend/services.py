@@ -10,14 +10,23 @@ def public_document(document):
 
 async def get_jobs(db):
     records = await db.jobs.find({}, {"_id": 0}).sort("created_index", -1).to_list(100)
-    return records if records else JOBS
+    jobs = [*JOBS, *records]
+    for job in jobs:
+        new_offers = await db.offers.count_documents({"job_id": job["id"]})
+        job["offer_count"] = job.get("offer_count", 0) + new_offers
+    return jobs
 
 
 async def get_job(db, job_id):
     record = await db.jobs.find_one({"id": job_id}, {"_id": 0})
     if record:
-        return record
-    return next((job for job in JOBS if job["id"] == job_id), None)
+        job = record
+    else:
+        job = next((item.copy() for item in JOBS if item["id"] == job_id), None)
+    if job:
+        new_offers = await db.offers.count_documents({"job_id": job_id})
+        job["offer_count"] = job.get("offer_count", 0) + new_offers
+    return job
 
 
 async def create_job(db, payload):
@@ -38,7 +47,7 @@ async def create_job(db, payload):
 
 async def get_offers(db, job_id):
     records = await db.offers.find({"job_id": job_id}, {"_id": 0}).to_list(100)
-    return records or OFFERS.get(job_id, [])
+    return [*OFFERS.get(job_id, []), *records]
 
 
 async def create_offer(db, job_id, payload):
@@ -49,5 +58,4 @@ async def create_offer(db, job_id, payload):
         "date": "Nettopp sendt",
     }
     await db.offers.insert_one(offer.copy())
-    await db.jobs.update_one({"id": job_id}, {"$inc": {"offer_count": 1}})
     return public_document(offer)

@@ -1,0 +1,121 @@
+{
+  "theme": "light",
+  "design_philosophy": {
+    "archetype": "Organic & Earthy + Swiss Brutalist",
+    "vibe": "Trust-building, structured, very clean, highly functional with a premium feel to justify payment. Emphasis on 'Norwegian Design': minimalist but warm, deeply reliant on high-quality typography, clear hierarchy, and negative space.",
+    "core_principles": [
+      "Trust First: Use clear, unambiguous layouts. BankID badges must stand out but feel seamlessly integrated.",
+      "Organic Accents: Root the app in physical craft (stone, wood, steel) via colors, avoiding tech-clichés.",
+      "Clear Hierarchies: The contrast between the free user (customer) and paying user (craftsmen) should feel distinct yet unified.",
+      "Macro-padding: Use p-8 to p-12 minimum for core sections to create a premium, uncrowded feel."
+    ]
+  },
+  "colors": {
+    "background": "#F9F9F8",
+    "foreground": "#0F172A",
+    "primary": "#1C3F60",
+    "primary_foreground": "#FFFFFF",
+    "secondary": "#E2E8F0",
+    "secondary_foreground": "#0F172A",
+    "accent": "#B65C45",
+    "accent_foreground": "#FFFFFF",
+    "muted": "#F1F5F9",
+    "muted_foreground": "#64748B",
+    "border": "#E2E8F0",
+    "success": "#1E3F33",
+    "destructive": "#991B1B"
+  },
+  "typography": {
+    "headings": {
+      "font": "Cabinet Grotesk",
+      "weights": ["400", "700", "800"],
+      "tracking": "tracking-tight"
+    },
+    "body": {
+      "font": "Satoshi",
+      "weights": ["400", "500", "600"],
+      "tracking": "tracking-normal"
+    },
+    "rules": [
+      "No Inter for headings. Use Cabinet Grotesk for a sturdy, trustworthy feel.",
+      "H1 up to text-5xl, H2 up to text-3xl, tracking-tight on all headings.",
+      "Labels must be text-xs, uppercase, tracking-[0.2em].",
+      "Do not exceed text-6xl for hero headings."
+    ]
+  },
+  "layouts": {
+    "general": "Bento grids for job listings and dashboard. Strong asymmetrical grids for marketing/landing views.",
+    "spacing": "Generous spacing system. Use p-6, p-8, p-12. Containers must have padding to avoid text collision.",
+    "cards": "Solid trust format. Flat background (white or very light warm grey), 1px subtle border (border-border), rounded-lg max. No muddy shadows.",
+    "navigation": "Clear, distinct, solid background or crystal glass. No fully transparent headers.",
+    "grid_technical": "Grid items MUST be direct children of grid containers. Mobile-first responsive grids."
+  },
+  "components": {
+    "buttons": "Pill-shaped or rounded-lg. Primary uses #1C3F60, clear hover state (lighter hue or text color change).",
+    "badges": "BankID badge must be distinct using the success green or a reliable blue.",
+    "forms": "Use Shadcn Form, Input, Select. Standardize on solid borders. Never use native html date pickers.",
+    "toasts": "Use Sonner for all notifications (e.g., job posted, bid placed) located in /src/components/ui/sonner.js.",
+    "interactions": "Micro-animations on all interactive elements. Hover, focus (with high contrast rings), and press states.",
+    "general": "All components must be .js based. Use pre-existing components from src/components/ui when applicable."
+  },
+  "visual_enhancers": {
+    "borders": "1px crisp borders. Avoid blurry shadows.",
+    "icons": "lucide-react for standard UI, Phosphor Icons if duotone/premium needed.",
+    "motion": "Use framer-motion for smooth entrance animations (staggered lists of jobs), page transitions."
+  },
+  "image_urls": [
+    {
+      "url": "https://images.pexels.com/photos/32357250/pexels-photo-32357250.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "category": "hero_craftsman",
+      "description": "A carpenter in a dusty workshop precisely cuts wood using an industrial saw."
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTJ8MHwxfHNlYXJjaHwxfHxlbGVjdHJpY2lhbiUyMHdvcmtpbmclMjB3aXJlc3xlbnwwfHx8fDE3ODUxMjIyMDh8MA&ixlib=rb-4.1.0&q=85",
+      "category": "craftsman_electrician",
+      "description": "Electrician installing wiring."
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1693382464372-fad822e7b38c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDJ8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBob3VzZSUyMHNjYW5kaW5hdmlhbnxlbnwwfHx8fDE3ODUxMjIyMDh8MA&ixlib=rb-4.1.0&q=85",
+      "category": "house_modern",
+      "description": "A modern Scandinavian living room filled with furniture and lots of windows."
+    },
+    {
+      "url": "https://images.pexels.com/photos/8730048/pexels-photo-8730048.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "category": "happy_customer",
+      "description": "Smiling couple receiving keys, celebrating new home purchase indoors."
+    }
+  ],
+  "accessibility": {
+    "contrast": "Ensure minimum 4.5:1 for standard text. Focus states must have high contrast rings.",
+    "motion": "Respect prefers-reduced-motion.",
+    "testing": "All interactive and key informational elements MUST include a data-testid attribute (e.g., data-testid='post-job-button') to facilitate robust automated testing."
+  },
+  "instructions_to_main_agent": [
+    "Implement the 'Håndverkerknappen' platform focusing on a robust frontend React UI (.js files) and FastAPI backend.",
+    "Ensure BankID verification badge is prominent on verified craftsmen profiles and listings.",
+    "Display Vipps and Stripe UI elements for payment (setup simulated endpoints, do not process real charges yet).",
+    "Use solid components, avoid card overuse. Lean towards dense, high-hierarchy lists for job boards.",
+    "Do NOT use HTML native date pickers or selects. Use Shadcn components for all interactive logic.",
+    "Apply generous padding (p-6, p-8) to all containers.",
+    "Center-align is banned for layouts; use left-aligned, asymmetrical grids (Bento style).",
+    "Create the specific email templates for the Resend integration in the frontend UI or backend module.",
+    "Ensure the affiliate products module is integrated contextually.",
+    "Use the provided image URLs as placeholders instead of generic text or grey boxes."
+  ],
+  "GENERAL_UI_UX_DESIGN_GUIDELINES": [
+    "CRITICAL: DO NOT use complete transparent background in header, overlays, any surface that has content under it. Example: Dropdown with transparent background.",
+    "All interactive and key informational elements MUST include a data-testid attribute.",
+    "Provide clear feedback for every action (e.g., successful job post, bid placement) using toasts.",
+    "Mobile-first design is mandatory. Ensure touch targets are at least 44x44px.",
+    "Maintain a clear distinction between customer (free) flows and craftsman (paid) flows."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Do not apply universal transitions (e.g., transition: all). Target specific properties to avoid breaking transforms.",
+    "Do not center align the app container (.App { text-align: center; } is forbidden).",
+    "Add hover, active, and focus states to all interactive elements.",
+    "Create depth through layered design elements with z-index hierarchy, NOT messy shadows.",
+    "Never use generic AI emojis for icons. Use lucide-react.",
+    "Do NOT leave components half-implemented. Follow through with proper responsive mobile-first Tailwind classes.",
+    "Use 'sonner' for toasts in /src/components/ui/sonner.js."
+  ]
+}

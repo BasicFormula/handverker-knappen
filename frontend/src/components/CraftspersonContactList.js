@@ -17,7 +17,7 @@ export function CraftspersonContactList({ people, onApproveContact, onPreferredC
           </div>
           <div className="craft-actions">
             <button type="button" className="select-craft-button" onClick={() => onApproveContact(person)} data-testid={`approve-contact-${person.id}`}><MessageSquareText size={16} /> Godkjenn kontakt</button>
-            <button type="button" className="preferred-button" onClick={() => onPreferredContact(person)} data-testid={`preferred-contact-${person.id}`}><Send size={15} /> Foretrukket · 200 kr</button>
+            <button type="button" className="preferred-button" onClick={() => onPreferredContact(person)} data-testid={`preferred-contact-${person.id}`}><Send size={15} /> Hurtigkontakt · 200 kr</button>
           </div>
         </article>
       ))}

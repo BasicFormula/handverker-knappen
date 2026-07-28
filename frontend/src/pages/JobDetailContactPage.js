@@ -4,10 +4,11 @@ import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 import { ContactAgreementBox } from "@/components/ContactAgreementBox";
+import { AvailableNowPanel } from "@/components/AvailableNowPanel";
 import { CraftspersonContactList } from "@/components/CraftspersonContactList";
 import { BankIdBadge } from "@/components/MarketplaceBits";
 import { PreferredContactModal } from "@/components/PreferredContactModal";
-import { createContactRequest, fetchAffiliateProducts, fetchCraftspeople, fetchJob, postOffer } from "@/lib/api";
+import { createContactRequest, fetchAffiliateProducts, fetchAvailableCraftspeople, fetchCraftspeople, fetchJob, postOffer } from "@/lib/api";
 
 
 export default function JobDetailContactPage() {
@@ -15,6 +16,7 @@ export default function JobDetailContactPage() {
   const [detail, setDetail] = useState(null);
   const [people, setPeople] = useState([]);
   const [products, setProducts] = useState([]);
+  const [availability, setAvailability] = useState(null);
   const [showOffer, setShowOffer] = useState(false);
   const [offer, setOffer] = useState({ amount: "", message: "" });
   const [contactFlow, setContactFlow] = useState(null);
@@ -24,6 +26,7 @@ export default function JobDetailContactPage() {
     fetchJob(jobId).then(setDetail).catch(() => setDetail(null));
     fetchCraftspeople().then(setPeople).catch(() => setPeople([]));
     fetchAffiliateProducts().then(setProducts).catch(() => setProducts([]));
+    fetchAvailableCraftspeople(jobId).then(setAvailability).catch(() => setAvailability(null));
   }, [jobId]);
 
   const sendOffer = async (event) => {
@@ -49,7 +52,7 @@ export default function JobDetailContactPage() {
 
   const createPreferredContact = async (paymentMethod) => {
     try {
-      const result = await createContactRequest(jobId, { craftsperson_id: preferredPerson.id, request_type: "preferred", payment_method: paymentMethod });
+      const result = await createContactRequest(jobId, { craftsperson_id: preferredPerson.id, request_type: "quick", payment_method: paymentMethod });
       setPreferredPerson(null);
       toast.success(result.message);
     } catch (error) {
@@ -81,6 +84,7 @@ export default function JobDetailContactPage() {
           <section className="detail-section">
             <div className="section-heading"><div><p className="eyebrow">HENVENDELSER</p><h2>{offers.length + job.offer_count} håndverkere vil hjelpe</h2></div><button className="secondary-button" type="button" onClick={() => setShowOffer(!showOffer)} data-testid="send-offer-toggle-button"><MessageSquare size={17} /> Meld interesse</button></div>
             {showOffer && <form className="offer-form" onSubmit={sendOffer} data-testid="send-offer-form"><input required data-testid="offer-amount-input" value={offer.amount} onChange={(event) => setOffer({ ...offer, amount: event.target.value })} placeholder="Cirka pris, for eksempel 22 500 kr" /><textarea required data-testid="offer-message-input" value={offer.message} onChange={(event) => setOffer({ ...offer, message: event.target.value })} placeholder="Skriv en kort, konkret melding til kunden" /><button className="primary-button" data-testid="submit-offer-button">Send interesse</button></form>}
+            <AvailableNowPanel availability={availability} onQuickContact={setPreferredPerson} />
             <ContactAgreementBox contactFlow={contactFlow} />
             <CraftspersonContactList people={people} onApproveContact={approveContact} onPreferredContact={setPreferredPerson} />
           </section>

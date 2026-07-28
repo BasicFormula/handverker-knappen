@@ -43,7 +43,7 @@ class ReliabilityEvent(BaseModel):
 
 class ContactRequestCreate(BaseModel):
     craftsperson_id: str
-    request_type: Literal["standard", "preferred"]
+    request_type: Literal["standard", "preferred", "quick"]
     payment_method: Literal["stripe", "vipps"] | None = None
 
 

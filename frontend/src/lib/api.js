@@ -13,6 +13,7 @@ export const postJob = async (payload) => (await axios.post(`${API}/jobs`, paylo
 export const postOffer = async (jobId, payload) => (await axios.post(`${API}/jobs/${jobId}/offers`, payload)).data;
 export const assignCraftsperson = async (jobId, payload) => (await axios.post(`${API}/jobs/${jobId}/assignment`, payload)).data;
 export const createContactRequest = async (jobId, payload) => (await axios.post(`${API}/jobs/${jobId}/contact-requests`, payload)).data;
+export const fetchAvailableCraftspeople = async (jobId) => (await axios.get(`${API}/jobs/${jobId}/available-craftspeople`)).data;
 export const fetchMarketCoverage = async () => (await axios.get(`${API}/market-coverage`)).data;
 export const onboardCraftsperson = async (payload) => (await axios.post(`${API}/craftspeople/onboard`, payload)).data;
 export const fetchLaunchCampaign = async () => (await axios.get(`${API}/launch-campaign`)).data;

@@ -59,6 +59,22 @@ async def job_detail(job_id: str):
     return {"job": job, "offers": await get_offers(db, job_id)}
 
 
+@router.get("/jobs/{job_id}/available-craftspeople")
+async def available_craftspeople(job_id: str):
+    job = await get_job(db, job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Oppdraget finnes ikke")
+    registered = await db.craftspeople.find({}, {"_id": 0}).to_list(100)
+    area_text = job["location"].lower()
+    matching = []
+    for craftsperson in [*CRAFTSPEOPLE, *registered]:
+        service_areas = craftsperson.get("service_areas", [craftsperson.get("location", "")])
+        serves_location = any(area.lower() in area_text for area in service_areas)
+        if craftsperson.get("verified") and craftsperson.get("available_now") and craftsperson["trade"] == job["category"] and serves_location:
+            matching.append(craftsperson)
+    return {"job_id": job_id, "response_target": "4 arbeidstimer", "craftspeople": matching}
+
+
 @router.post("/jobs/{job_id}/offers", status_code=201)
 async def post_offer(job_id: str, payload: OfferCreate):
     if not await get_job(db, job_id):
@@ -96,7 +112,7 @@ async def create_contact_request(job_id: str, payload: ContactRequestCreate):
         craftsperson = await db.craftspeople.find_one({"id": payload.craftsperson_id}, {"_id": 0})
     if not craftsperson:
         raise HTTPException(status_code=404, detail="Håndverkeren finnes ikke")
-    if payload.request_type == "preferred" and not payload.payment_method:
+    if payload.request_type in {"preferred", "quick"} and not payload.payment_method:
         raise HTTPException(status_code=422, detail="Velg Vipps eller kort for foretrukket håndverker")
 
     now = datetime.now(timezone.utc)
@@ -124,15 +140,17 @@ async def create_contact_request(job_id: str, payload: ContactRequestCreate):
             }
         )
     else:
+        response_target = "4 arbeidstimer"
         contact_request.update(
             {
                 "status": "waiting_for_positive_response",
                 "fee": 200,
                 "contact_exchange": "pending_craftsperson_response",
-                "response_deadline": (now + timedelta(hours=48)).isoformat(),
+                "response_deadline": (now + timedelta(hours=4)).isoformat(),
+                "response_target": response_target,
                 "refund_status": "automatic_refund_if_no_positive_response",
                 "refund_scheduler_status": "requires_payment_provider_activation",
-                "message": "Prioritert forespørsel er sendt. Du får 200 kr tilbake hvis håndverkeren ikke gir positivt svar innen 48 timer.",
+                "message": "Hurtigkontakt er sendt. Du får 200 kr tilbake hvis håndverkeren ikke gir positivt svar innen 4 arbeidstimer.",
             }
         )
     await db.contact_requests.insert_one(contact_request.copy())
@@ -144,8 +162,8 @@ async def respond_to_contact_request(request_id: str, payload: ContactRequestRes
     contact_request = await db.contact_requests.find_one({"id": request_id}, {"_id": 0})
     if not contact_request:
         raise HTTPException(status_code=404, detail="Kontaktforespørselen finnes ikke")
-    if contact_request["request_type"] != "preferred":
-        raise HTTPException(status_code=422, detail="Bare foretrukne forespørsler trenger svar")
+    if contact_request["request_type"] not in {"preferred", "quick"}:
+        raise HTTPException(status_code=422, detail="Bare hurtigforespørsler trenger svar")
 
     accepted = payload.response == "accepted"
     update = {

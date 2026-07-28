@@ -52,8 +52,9 @@ export default function JobDetailContactPage() {
       const result = await createContactRequest(jobId, { craftsperson_id: preferredPerson.id, request_type: "preferred", payment_method: paymentMethod });
       setPreferredPerson(null);
       toast.success(result.message);
-    } catch {
-      toast.error("Kunne ikke sende prioritert forespørsel akkurat nå.");
+    } catch (error) {
+      const message = error.response?.data?.detail || "Kunne ikke sende prioritert forespørsel akkurat nå.";
+      toast.error(message);
     }
   };
 

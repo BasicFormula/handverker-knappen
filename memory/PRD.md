@@ -43,11 +43,18 @@ Bygg en trygg, norskspråklig markedsplass der BankID-verifiserte kunder kan leg
 - Importkrav er synlige: navn, bedrift, e-post, fagområde, område, samtykkedato og samtykkekilde.
 - Påmeldingslenke til fagprofil kan kopieres fra lanseringssenteret.
 
+### Funksjon lagt til – 2026-07-28: kontakt på kundens premisser
+- Standardflyten lar kunden godkjenne kontakt etter en henvendelse fra håndverkeren, i stedet for å velge en håndverker som en ferdig booking.
+- Godkjent kontakt åpner en enkel avtaleboks: avklar oppdragets omfang, cirka pris/befaring og praktiske detaljer som adresse, dato, adkomst og parkering.
+- «Foretrukket håndverker» koster 200 kr og sender en prioritert forespørsel til en valgt fagperson.
+- Regelen er lagret: kunden skal få automatisk refusjon dersom det ikke kommer positivt svar innen 48 timer. Den faktiske betalings- og refusjonsautomatikken aktiveres når betalingsleverandør og planlagt jobbkjøring er koblet til.
+
 ### Prioritert backlog
 #### P0
 - Koble til Clerk + Criipto OIDC med reell BankID-verifisering når tilganger foreligger.
 - Migrere data og modeller fra demo-MongoDB til Uniweb MariaDB.
 - Implementere signaturverifiserte Stripe/Vipps-webhooks og reell betalingsautomasjon.
+- Aktivere 48-timers refusjonsjobb for foretrukket håndverker når betalingsflyten er koblet til.
 
 #### P1
 - Resend-avsender, transaksjons-e-post og planlagte kampanjer.

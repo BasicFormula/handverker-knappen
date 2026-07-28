@@ -103,7 +103,8 @@ async def create_contact_request(job_id: str, payload: ContactRequestCreate):
     contact_request = {
         "id": f"contact-{uuid4().hex[:8]}",
         "job_id": job_id,
-        "craftsperson": craftsperson,
+        "craftsperson_id": craftsperson["id"],
+        "craftsperson_name": craftsperson["name"],
         "request_type": payload.request_type,
         "payment_method": payload.payment_method,
         "created_at": now.isoformat(),
@@ -130,6 +131,7 @@ async def create_contact_request(job_id: str, payload: ContactRequestCreate):
                 "contact_exchange": "pending_craftsperson_response",
                 "response_deadline": (now + timedelta(hours=48)).isoformat(),
                 "refund_status": "automatic_refund_if_no_positive_response",
+                "refund_scheduler_status": "requires_payment_provider_activation",
                 "message": "Prioritert forespørsel er sendt. Du får 200 kr tilbake hvis håndverkeren ikke gir positivt svar innen 48 timer.",
             }
         )

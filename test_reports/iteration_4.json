@@ -1,0 +1,24 @@
+{
+  "summary": "Verified revised Håndverkerknappen contact flow (customer-approved contact, standard vs preferred 200 kr, 48h auto-refund). Backend: 39/39 pytest passing (added 10 new tests for contact-requests + response endpoints). Verified: standard POST /api/jobs/job-kitchen/contact-requests craft-ida -> status contact_approved, fee 0, contact_exchange shared, message Norwegian, exactly 3 next_steps (scope/pris eller befaring/adresse+dato+adkomst+parkering). Preferred with vipps/stripe -> status waiting_for_positive_response, fee 200, response_deadline ~48h (asserted 47h<delta<49h), refund_status automatic_refund_if_no_positive_response, message Norwegian. Preferred without payment_method -> 422 with Norwegian detail. Unknown job/craft -> 404. Response endpoint: accepted -> contact_approved+shared+not_needed; declined -> declined+not_shared+automatic_refund_pending; standard request rejected (422); unknown -> 404. No _id leaks. Frontend (Playwright, 1920 desktop + 390 mobile): job-detail-page renders, approve-contact-craft-ida click reveals contact-agreement-box with agreement-steps count=3 and correct Norwegian copy, approved message shown, preferred-contact-craft-ida opens preferred-contact-modal displaying '48-timers svarregel 200 kr', both preferred-vipps-payment-button and preferred-stripe-payment-button visible, modal copy mentions 48 timer + refunderes automatisk. Choosing Vipps closes modal (no real payment) and toasts Norwegian success message ('Prioritert forespørsel er sendt. Du får 200 kr tilbake hvis håndverkeren ikke gir positivt svar innen 48 timer.'). Mobile 390: scrollWidth==clientWidth==390 (no horizontal overflow). Regressions: /for-fagfolk and /lansering still load.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_marketplace.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "marketplace.py create_contact_request is fine but stores craftsperson snapshot inside contact_request document; if craft profile changes, request retains stale snapshot. Acceptable for demo but worth flagging.",
+    "48h auto-refund is not actually scheduled anywhere (only refund_status field). This is expected per problem statement (mocked) but should be clearly documented so a future dev doesn't assume a scheduler exists.",
+    "respond_to_contact_request does not verify the responder identity (no auth) – acceptable in demo, but noted for future.",
+    "JobDetailContactPage createPreferredContact does not display an error state distinct from success (just toast.error generic). Consider surfacing the API error detail."
+  ],
+  "updated_files": ["/app/backend/tests/test_marketplace.py"],
+  "success_rate": {"backend": "100% (39/39)", "frontend": "100%"},
+  "test_credentials": "None (demo, no auth).",
+  "seed_data_creation": "Contact request records inserted into db.contact_requests via tests (id prefix contact-). No dedicated cleanup endpoint exists; residual test docs are harmless.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Contact flow endpoints: POST /api/jobs/{job_id}/contact-requests (body: craftsperson_id, request_type=standard|preferred, payment_method=stripe|vipps required only if preferred) and POST /api/contact-requests/{request_id}/response (body: response=accepted|declined). UI testids verified: job-detail-page, approve-contact-craft-ida, contact-agreement-box, agreement-steps, preferred-contact-craft-ida, preferred-contact-modal, preferred-vipps-payment-button, preferred-stripe-payment-button, preferred-contact-fee, close-preferred-modal-button. Preview URL: https://skilled-ops.preview.emergentagent.com.",
+  "rca of the issue": "N/A — no issues found."
+}

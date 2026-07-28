@@ -284,6 +284,106 @@ def test_no_send_or_import_endpoints(client):
 
 
 
+# ---- Contact Requests (new flow) ----
+def test_contact_request_standard(client):
+    r = client.post(f"{API}/jobs/job-kitchen/contact-requests",
+                    json={"craftsperson_id": "craft-ida", "request_type": "standard"})
+    assert r.status_code == 201, r.text
+    d = r.json()
+    assert d["status"] == "contact_approved"
+    assert d["fee"] == 0
+    assert d["contact_exchange"] == "shared"
+    assert isinstance(d.get("message"), str) and len(d["message"]) > 0
+    assert isinstance(d["next_steps"], list) and len(d["next_steps"]) == 3
+    # Norwegian check
+    joined = " ".join(d["next_steps"]).lower()
+    assert "oppdrag" in joined or "pris" in joined or "adresse" in joined
+    assert "_id" not in d
+
+
+def test_contact_request_preferred_vipps(client):
+    from datetime import datetime, timezone, timedelta
+    r = client.post(f"{API}/jobs/job-kitchen/contact-requests",
+                    json={"craftsperson_id": "craft-ida", "request_type": "preferred",
+                          "payment_method": "vipps"})
+    assert r.status_code == 201, r.text
+    d = r.json()
+    assert d["status"] == "waiting_for_positive_response"
+    assert d["fee"] == 200
+    assert d["refund_status"] == "automatic_refund_if_no_positive_response"
+    assert d["payment_method"] == "vipps"
+    # deadline roughly 48h
+    deadline = datetime.fromisoformat(d["response_deadline"])
+    delta = deadline - datetime.now(timezone.utc)
+    assert timedelta(hours=47) < delta < timedelta(hours=49)
+    assert d["id"].startswith("contact-")
+
+
+def test_contact_request_preferred_stripe(client):
+    r = client.post(f"{API}/jobs/job-kitchen/contact-requests",
+                    json={"craftsperson_id": "craft-ida", "request_type": "preferred",
+                          "payment_method": "stripe"})
+    assert r.status_code == 201
+    assert r.json()["payment_method"] == "stripe"
+
+
+def test_contact_request_preferred_missing_payment(client):
+    r = client.post(f"{API}/jobs/job-kitchen/contact-requests",
+                    json={"craftsperson_id": "craft-ida", "request_type": "preferred"})
+    assert r.status_code == 422
+
+
+def test_contact_request_unknown_job(client):
+    r = client.post(f"{API}/jobs/nope/contact-requests",
+                    json={"craftsperson_id": "craft-ida", "request_type": "standard"})
+    assert r.status_code == 404
+
+
+def test_contact_request_unknown_craft(client):
+    r = client.post(f"{API}/jobs/job-kitchen/contact-requests",
+                    json={"craftsperson_id": "craft-unknown", "request_type": "standard"})
+    assert r.status_code == 404
+
+
+def test_contact_request_response_accept(client):
+    create = client.post(f"{API}/jobs/job-kitchen/contact-requests",
+                         json={"craftsperson_id": "craft-ida", "request_type": "preferred",
+                               "payment_method": "vipps"})
+    rid = create.json()["id"]
+    r = client.post(f"{API}/contact-requests/{rid}/response", json={"response": "accepted"})
+    assert r.status_code == 200, r.text
+    d = r.json()
+    assert d["status"] == "contact_approved"
+    assert d["contact_exchange"] == "shared"
+    assert d["refund_status"] == "not_needed"
+
+
+def test_contact_request_response_decline(client):
+    create = client.post(f"{API}/jobs/job-kitchen/contact-requests",
+                         json={"craftsperson_id": "craft-ida", "request_type": "preferred",
+                               "payment_method": "stripe"})
+    rid = create.json()["id"]
+    r = client.post(f"{API}/contact-requests/{rid}/response", json={"response": "declined"})
+    assert r.status_code == 200
+    d = r.json()
+    assert d["status"] == "declined"
+    assert d["contact_exchange"] == "not_shared"
+    assert d["refund_status"] == "automatic_refund_pending"
+
+
+def test_contact_request_response_standard_rejected(client):
+    create = client.post(f"{API}/jobs/job-kitchen/contact-requests",
+                         json={"craftsperson_id": "craft-ida", "request_type": "standard"})
+    rid = create.json()["id"]
+    r = client.post(f"{API}/contact-requests/{rid}/response", json={"response": "accepted"})
+    assert r.status_code == 422
+
+
+def test_contact_request_response_unknown(client):
+    r = client.post(f"{API}/contact-requests/contact-nope/response", json={"response": "accepted"})
+    assert r.status_code == 404
+
+
 # ---- Cleanup ----
 def test_cleanup(client, onboarded):
     """Best-effort cleanup of TEST_ data via direct Mongo is not possible from here;

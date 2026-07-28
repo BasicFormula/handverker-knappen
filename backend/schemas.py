@@ -39,3 +39,13 @@ class CraftspersonOnboard(BaseModel):
 
 class ReliabilityEvent(BaseModel):
     outcome: Literal["completed", "cancelled", "no_response"]
+
+
+class ContactRequestCreate(BaseModel):
+    craftsperson_id: str
+    request_type: Literal["standard", "preferred"]
+    payment_method: Literal["stripe", "vipps"] | None = None
+
+
+class ContactRequestResponse(BaseModel):
+    response: Literal["accepted", "declined"]

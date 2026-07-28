@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException
@@ -7,6 +7,8 @@ from demo_data import AFFILIATE_PRODUCTS, CRAFTSPEOPLE
 from database import db
 from schemas import (
     AssignmentCreate,
+    ContactRequestCreate,
+    ContactRequestResponse,
     CraftspersonOnboard,
     JobCreate,
     OfferCreate,
@@ -83,6 +85,75 @@ async def assign_craftsperson(job_id: str, payload: AssignmentCreate):
     }
     await db.assignments.insert_one(assignment.copy())
     return {"assignment": {key: value for key, value in assignment.items() if key != "_id"}, "message": "Håndverker valgt. Betalingssteget er klart for aktivering."}
+
+
+@router.post("/jobs/{job_id}/contact-requests", status_code=201)
+async def create_contact_request(job_id: str, payload: ContactRequestCreate):
+    if not await get_job(db, job_id):
+        raise HTTPException(status_code=404, detail="Oppdraget finnes ikke")
+    craftsperson = next((person for person in CRAFTSPEOPLE if person["id"] == payload.craftsperson_id), None)
+    if not craftsperson:
+        craftsperson = await db.craftspeople.find_one({"id": payload.craftsperson_id}, {"_id": 0})
+    if not craftsperson:
+        raise HTTPException(status_code=404, detail="Håndverkeren finnes ikke")
+    if payload.request_type == "preferred" and not payload.payment_method:
+        raise HTTPException(status_code=422, detail="Velg Vipps eller kort for foretrukket håndverker")
+
+    now = datetime.now(timezone.utc)
+    contact_request = {
+        "id": f"contact-{uuid4().hex[:8]}",
+        "job_id": job_id,
+        "craftsperson": craftsperson,
+        "request_type": payload.request_type,
+        "payment_method": payload.payment_method,
+        "created_at": now.isoformat(),
+        "next_steps": [
+            "Bli enige om hva oppdraget omfatter.",
+            "Avklar cirka pris eller behov for befaring.",
+            "Bekreft adresse, dato, adkomst og parkering.",
+        ],
+    }
+    if payload.request_type == "standard":
+        contact_request.update(
+            {
+                "status": "contact_approved",
+                "fee": 0,
+                "contact_exchange": "shared",
+                "message": "Kontakt er godkjent. Dere kan nå avklare oppdraget direkte.",
+            }
+        )
+    else:
+        contact_request.update(
+            {
+                "status": "waiting_for_positive_response",
+                "fee": 200,
+                "contact_exchange": "pending_craftsperson_response",
+                "response_deadline": (now + timedelta(hours=48)).isoformat(),
+                "refund_status": "automatic_refund_if_no_positive_response",
+                "message": "Prioritert forespørsel er sendt. Du får 200 kr tilbake hvis håndverkeren ikke gir positivt svar innen 48 timer.",
+            }
+        )
+    await db.contact_requests.insert_one(contact_request.copy())
+    return {key: value for key, value in contact_request.items() if key != "_id"}
+
+
+@router.post("/contact-requests/{request_id}/response")
+async def respond_to_contact_request(request_id: str, payload: ContactRequestResponse):
+    contact_request = await db.contact_requests.find_one({"id": request_id}, {"_id": 0})
+    if not contact_request:
+        raise HTTPException(status_code=404, detail="Kontaktforespørselen finnes ikke")
+    if contact_request["request_type"] != "preferred":
+        raise HTTPException(status_code=422, detail="Bare foretrukne forespørsler trenger svar")
+
+    accepted = payload.response == "accepted"
+    update = {
+        "status": "contact_approved" if accepted else "declined",
+        "contact_exchange": "shared" if accepted else "not_shared",
+        "refund_status": "not_needed" if accepted else "automatic_refund_pending",
+        "responded_at": datetime.now(timezone.utc).isoformat(),
+    }
+    await db.contact_requests.update_one({"id": request_id}, {"$set": update})
+    return {"id": request_id, **update}
 
 
 @router.post("/ratings", status_code=201)
